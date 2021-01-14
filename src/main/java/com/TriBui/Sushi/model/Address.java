@@ -6,18 +6,19 @@
 package com.TriBui.Sushi.model;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,6 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "Address", catalog = "Sushi", schema = "dbo")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),
     @NamedQuery(name = "Address.findByAddressID", query = "SELECT a FROM Address a WHERE a.addressID = :addressID"),
@@ -49,8 +51,9 @@ public class Address implements Serializable {
     @Size(max = 100)
     @Column(name = "AddressStreet", length = 100)
     private String addressStreet;
-    @OneToMany(mappedBy = "addressID", fetch = FetchType.LAZY)
-    private List<User> userList;
+    @JoinColumn(name = "UserID", referencedColumnName = "UserID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User userID;
 
     public Address() {
     }
@@ -91,12 +94,12 @@ public class Address implements Serializable {
         this.addressStreet = addressStreet;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public User getUserID() {
+        return userID;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserID(User userID) {
+        this.userID = userID;
     }
 
     @Override
