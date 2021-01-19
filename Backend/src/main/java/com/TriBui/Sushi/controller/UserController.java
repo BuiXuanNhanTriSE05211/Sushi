@@ -57,7 +57,8 @@ public class UserController {
         userAlreadyExisted = userRepository.existsById(userID);
         if (userAlreadyExisted == true) {
             userRepository.deleteById(userID);
-        }
-        userRepository.deleteById(userID);
+        } else {
+            throw new RuntimeException();
+        }      
     }
 }
