@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -45,5 +47,17 @@ public class UserController {
         } else {
             userRepository.save(user);
         }
+    }
+    
+    @DeleteMapping ("/users/{userID}")
+    @ResponseStatus (HttpStatus.OK)
+    @Transactional (propagation = Propagation.REQUIRES_NEW)
+    public void deleteUser(@PathVariable String userID) {
+        boolean userAlreadyExisted;
+        userAlreadyExisted = userRepository.existsById(userID);
+        if (userAlreadyExisted == true) {
+            userRepository.deleteById(userID);
+        }
+        userRepository.deleteById(userID);
     }
 }
