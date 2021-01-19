@@ -1,4 +1,11 @@
-import React, { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
+/* eslint-disable prefer-destructuring */
+import React, { 
+  ChangeEvent
+  , FormEvent
+  , MouseEvent
+  , ReactElement
+  , useState 
+} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +23,7 @@ function App (): ReactElement {
   let updatedUser: User | undefined;
   let inputField: HTMLInputElement | HTMLTextAreaElement | undefined;
   let userAPI: UserAPI | undefined;
+  let userID: string;
 
   function updateUser (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,13 +32,22 @@ function App (): ReactElement {
     updatedUser = user;
     updatedUser[inputField.name as keyof User] = inputField.value;
     return updatedUser;
-  } 
+  }
   
   function signUp (event: FormEvent<HTMLFormElement>){
     event.preventDefault ();
     userAPI = new UserAPI ();
     userAPI.registerUser (user);  
   }
+
+  /**/
+  function deleteUser (event: MouseEvent<HTMLButtonElement>){
+    event.preventDefault ();
+    userAPI = new UserAPI ();
+    userID = user.userID;
+    userAPI.deleteUser (userID);
+  }
+  /**/
 
   return (
     <Container component="main" maxWidth="xs">
@@ -125,6 +142,16 @@ function App (): ReactElement {
               </Link>
             </Grid>
           </Grid>
+        </form>
+        <form>
+        <button 
+          type = "button"
+          onClick = {(event) => {
+            deleteUser (event);
+          }}
+        >
+          Delete user.
+        </button>
         </form>
       </div>
     </Container>
