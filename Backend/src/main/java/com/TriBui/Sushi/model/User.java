@@ -34,8 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByUserID", query = "SELECT u FROM User u WHERE u.userID = :userID"),
     @NamedQuery(name = "User.findByUserName", query = "SELECT u FROM User u WHERE u.userName = :userName"),
     @NamedQuery(name = "User.findByUserEmail", query = "SELECT u FROM User u WHERE u.userEmail = :userEmail"),
-    @NamedQuery(name = "User.findByUserPhone", query = "SELECT u FROM User u WHERE u.userPhone = :userPhone"),
-    @NamedQuery(name = "User.findByAddressID", query = "SELECT u FROM User u WHERE u.addressID = :addressID")})
+    @NamedQuery(name = "User.findByUserPhone", query = "SELECT u FROM User u WHERE u.userPhone = :userPhone")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,11 +50,9 @@ public class User implements Serializable {
     @Size(max = 50)
     @Column(name = "UserEmail", length = 50)
     private String userEmail;
-    @Column(name = "UserPhone")
-    private Integer userPhone;
     @Size(max = 50)
-    @Column(name = "AddressID", length = 50)
-    private String addressID;
+    @Column(name = "UserPhone", length = 50)
+    private String userPhone;
     @ManyToMany(mappedBy = "userList", fetch = FetchType.LAZY)
     private List<Role> roleList;
     @OneToMany(mappedBy = "userID", fetch = FetchType.LAZY)
@@ -92,20 +89,12 @@ public class User implements Serializable {
         this.userEmail = userEmail;
     }
 
-    public Integer getUserPhone() {
+    public String getUserPhone() {
         return userPhone;
     }
 
-    public void setUserPhone(Integer userPhone) {
+    public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
-    }
-
-    public String getAddressID() {
-        return addressID;
-    }
-
-    public void setAddressID(String addressID) {
-        this.addressID = addressID;
     }
 
     @XmlTransient

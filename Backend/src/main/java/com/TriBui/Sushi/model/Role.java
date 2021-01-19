@@ -20,6 +20,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,15 +29,12 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "Role", catalog = "Sushi", schema = "dbo")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
     @NamedQuery(name = "Role.findByRoleID", query = "SELECT r FROM Role r WHERE r.roleID = :roleID"),
     @NamedQuery(name = "Role.findByRoleName", query = "SELECT r FROM Role r WHERE r.roleName = :roleName")})
 public class Role implements Serializable {
-
-    @Size(max = 50)
-    @Column(name = "RoleName", length = 50)
-    private String roleName;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +43,9 @@ public class Role implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "RoleID", nullable = false, length = 10)
     private String roleID;
+    @Size(max = 50)
+    @Column(name = "RoleName", length = 50)
+    private String roleName;
     @JoinTable(name = "UserRole", joinColumns = {
         @JoinColumn(name = "RoleID", referencedColumnName = "RoleID")}, inverseJoinColumns = {
         @JoinColumn(name = "UserID", referencedColumnName = "UserID")})
@@ -65,7 +67,15 @@ public class Role implements Serializable {
         this.roleID = roleID;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
 
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    @XmlTransient
     public List<User> getUserList() {
         return userList;
     }
@@ -97,14 +107,6 @@ public class Role implements Serializable {
     @Override
     public String toString() {
         return "com.TriBui.Sushi.model.Role[ roleID=" + roleID + " ]";
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
     
 }
