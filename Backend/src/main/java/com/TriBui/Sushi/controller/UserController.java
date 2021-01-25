@@ -38,7 +38,7 @@ public class UserController {
     @ResponseStatus (HttpStatus.CREATED)
     @Transactional (propagation = Propagation.REQUIRES_NEW)
     public void registerUser (@RequestBody User user) {
-        String userID;
+        int userID;
         boolean userAlreadyExisted;
         userID = user.getUserID();
         userAlreadyExisted = userRepository.existsById(userID);
@@ -52,7 +52,7 @@ public class UserController {
     @DeleteMapping ("/users/{userID}")
     @ResponseStatus (HttpStatus.OK)
     @Transactional (propagation = Propagation.REQUIRES_NEW)
-    public void deleteUser(@PathVariable String userID) {
+    public void deleteUser(@PathVariable int userID) {
         boolean userAlreadyExisted;
         userAlreadyExisted = userRepository.existsById(userID);
         if (userAlreadyExisted == true) {

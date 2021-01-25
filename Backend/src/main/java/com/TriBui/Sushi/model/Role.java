@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author This MC
  */
 @Entity
-@Table(name = "Role", catalog = "Sushi", schema = "dbo")
+@Table(name = "Role", catalog = "Mocking-DB", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
@@ -38,32 +40,38 @@ public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "RoleID", nullable = false)
+    private Integer roleID;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "RoleID", nullable = false, length = 10)
-    private String roleID;
-    @Size(max = 50)
-    @Column(name = "RoleName", length = 50)
+    @Size(min = 1, max = 500)
+    @Column(name = "RoleName", nullable = false, length = 500)
     private String roleName;
     @JoinTable(name = "UserRole", joinColumns = {
-        @JoinColumn(name = "RoleID", referencedColumnName = "RoleID")}, inverseJoinColumns = {
-        @JoinColumn(name = "UserID", referencedColumnName = "UserID")})
+        @JoinColumn(name = "RoleID", referencedColumnName = "RoleID", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "UserID", referencedColumnName = "UserID", nullable = false)})
     @ManyToMany(fetch = FetchType.LAZY)
     private List<User> userList;
 
     public Role() {
     }
 
-    public Role(String roleID) {
+    public Role(Integer roleID) {
         this.roleID = roleID;
     }
 
-    public String getRoleID() {
+    public Role(Integer roleID, String roleName) {
+        this.roleID = roleID;
+        this.roleName = roleName;
+    }
+
+    public Integer getRoleID() {
         return roleID;
     }
 
-    public void setRoleID(String roleID) {
+    public void setRoleID(Integer roleID) {
         this.roleID = roleID;
     }
 

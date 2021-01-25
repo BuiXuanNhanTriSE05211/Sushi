@@ -10,13 +10,14 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,73 +26,48 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author This MC
  */
 @Entity
-@Table(name = "Address", catalog = "Sushi", schema = "dbo")
+@Table(name = "Address", catalog = "Mocking-DB", schema = "dbo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a"),
     @NamedQuery(name = "Address.findByAddressID", query = "SELECT a FROM Address a WHERE a.addressID = :addressID"),
-    @NamedQuery(name = "Address.findByAddressCity", query = "SELECT a FROM Address a WHERE a.addressCity = :addressCity"),
-    @NamedQuery(name = "Address.findByAddressDistrict", query = "SELECT a FROM Address a WHERE a.addressDistrict = :addressDistrict"),
-    @NamedQuery(name = "Address.findByAddressStreet", query = "SELECT a FROM Address a WHERE a.addressStreet = :addressStreet")})
+    @NamedQuery(name = "Address.findByCity", query = "SELECT a FROM Address a WHERE a.city = :city")})
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "AddressID", nullable = false, length = 50)
-    private String addressID;
-    @Size(max = 50)
-    @Column(name = "AddressCity", length = 50)
-    private String addressCity;
-    @Size(max = 50)
-    @Column(name = "AddressDistrict", length = 50)
-    private String addressDistrict;
-    @Size(max = 100)
-    @Column(name = "AddressStreet", length = 100)
-    private String addressStreet;
-    @JoinColumn(name = "UserID", referencedColumnName = "UserID")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "AddressID", nullable = false)
+    private Integer addressID;
+    @Size(max = 500)
+    @Column(name = "City", length = 500)
+    private String city;
+    @JoinColumn(name = "UserID", referencedColumnName = "UserID", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User userID;
 
     public Address() {
     }
 
-    public Address(String addressID) {
+    public Address(Integer addressID) {
         this.addressID = addressID;
     }
 
-    public String getAddressID() {
+    public Integer getAddressID() {
         return addressID;
     }
 
-    public void setAddressID(String addressID) {
+    public void setAddressID(Integer addressID) {
         this.addressID = addressID;
     }
 
-    public String getAddressCity() {
-        return addressCity;
+    public String getCity() {
+        return city;
     }
 
-    public void setAddressCity(String addressCity) {
-        this.addressCity = addressCity;
-    }
-
-    public String getAddressDistrict() {
-        return addressDistrict;
-    }
-
-    public void setAddressDistrict(String addressDistrict) {
-        this.addressDistrict = addressDistrict;
-    }
-
-    public String getAddressStreet() {
-        return addressStreet;
-    }
-
-    public void setAddressStreet(String addressStreet) {
-        this.addressStreet = addressStreet;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public User getUserID() {
